@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  main:
+    container_name: django-main
+    hostname: main
+    build:
+      context: ./main
+      dockerfile: Dockerfile
+    volumes:
+      - ./main:/app
+    environment:
+      - SECRET_KEY=4046d2524a122bb1a60d4826cc85881a5a7024f5db2202725795b76ee8610257
+      - SUBSERVICE_URL=subservice
+      - SUBSERVICE_PORT=8000
+      - DEBUG=1
+      - ALLOWED_HOSTS=0.0.0.0 127.0.0.1 *
+    ports:
+      - "8000:8000"
+    command: "python manage.py runserver 0.0.0.0:8000"
+
+  subservice:
+    container_name: django-subservice
+    hostname: subservice
+    build:
+      context: ./subservice
+      dockerfile: Dockerfile
+    environment:
+      - SECRET_KEY=e33771f71fe94a7a1f3f86aea6cd841bd8caa1627f06d1f6d32588d289db08f8
+      - MAIN_URL=main
+      - MAIN_PORT=8000
+      - DEBUG=1
+      - ALLOWED_HOSTS=0.0.0.0 127.0.0.1 *
+    volumes:
+      - ./subservice:/app
+    command: "python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - main
