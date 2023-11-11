@@ -1,5 +1,5 @@
 from rest_framework.serializers import Serializer
-from rest_framework.fields import IntegerField
+from rest_framework.fields import IntegerField, CharField
 
 
 class CalculatorSerializer(Serializer):
@@ -9,6 +9,7 @@ class CalculatorSerializer(Serializer):
     width = IntegerField(
         min_value=1
     )
+    action = CharField()
 
 
 class CalculatorResultSerializer(CalculatorSerializer):

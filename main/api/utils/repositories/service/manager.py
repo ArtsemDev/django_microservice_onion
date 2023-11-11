@@ -17,9 +17,9 @@ class SubServiceManager(AbstractServiceManager):
         if data.is_valid():
             response_data = self.repository.post(data=data)
             if response_data is not None:
-                return Response(response_data.initial_data, status=status.HTTP_200_OK)
-            return Response("invalid", status=status.HTTP_400_BAD_REQUEST)
-        return Response(data.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(data=response_data.initial_data, status=status.HTTP_200_OK)
+            return Response(data="invalid", status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        return Response(data=data.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 sub_service_manager = SubServiceManager(
